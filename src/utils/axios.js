@@ -4,7 +4,7 @@ axios.defaults.withCredentials = true;
 
 const instance = axios.create({
     
-    baseURL:'https://api.trendtube.online/api/'
+     baseURL:'https://api.trendtube.online/api/'
 })
 
 export default instance
