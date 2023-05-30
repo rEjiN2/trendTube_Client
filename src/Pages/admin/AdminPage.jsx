@@ -3,9 +3,7 @@ import styled from 'styled-components';
 import Sidebar from '../../Components/admin/Sidebar';
 import Navbar from '../../Components/admin/Navbar';
 import axios from '../../utils/axios';
-import { io } from 'socket.io-client';
 
-const socket = io('http://localhost:5000');
 const PageContainer = styled.div`
   display: flex;
   background-color: #808080;
@@ -59,7 +57,7 @@ const CardWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
   gap: 150px;
-  background-color:white;
+  background-color: white;
 `;
 
 const FlipCardWrapper = styled.div`
@@ -150,26 +148,6 @@ const AdminPage = () => {
     };
 
     getUsersList();
-
-    socket.on('userLoggedIn', (userId) => {
-      setUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user._id === userId ? { ...user, online: true } : user
-        )
-      );
-    });
-
-    socket.on('userLoggedOut', (userId) => {
-      setUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user._id === userId ? { ...user, online: false } : user
-        )
-      );
-    });
-
-    return () => {
-      socket.disconnect();
-    };
   }, []);
 
   return (
@@ -186,7 +164,7 @@ const AdminPage = () => {
               </FlipCardFront>
               <FlipCardBack>
                 <Title className="title">Blocked</Title>
-                <h3> 3 </h3>
+                <h3>3</h3>
               </FlipCardBack>
             </FlipCardInner>
           </FlipCardWrapper>
@@ -206,7 +184,7 @@ const AdminPage = () => {
             <FlipCardInner>
               <FlipCardFront>
                 <Title className="title">Videos</Title>
-                <h3> 24</h3>
+                <h3>24</h3>
               </FlipCardFront>
               <FlipCardBack>
                 <Title className="title">Videos</Title>
@@ -251,7 +229,7 @@ const AdminPage = () => {
             ))}
           </tbody>
         </TableContainer>
-      </ContentContainer>
+      </ContentContainer> 
     </PageContainer>
   );
 };
