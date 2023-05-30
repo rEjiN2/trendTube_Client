@@ -20,7 +20,7 @@ useEffect(()=>{
 
   const fetchVideos = async()=>{
     try{
-      const res = await axios.get(`/videos/${type}`,{withCredentials: true, credentials: 'include'})
+      const res = await axios.get(`/videos/${type}`,{withCredentials: true})
       setVideos(res.data)
     }
     catch(err){
