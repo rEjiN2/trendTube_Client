@@ -3,7 +3,8 @@ axios.defaults.withCredentials = true;
 
 
 const instance = axios.create({
-    baseURL:'http://localhost:5000/api/'
+    
+    baseURL:'http://16.16.167.249/api/'
 })
 
 export default instance
