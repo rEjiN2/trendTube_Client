@@ -23,9 +23,9 @@ function AdminApp() {
     
       } />
       <Route path="/verifyVideo" element={
-       <ProtectedUser>
+       
       <Verify/>
-      </ProtectedUser>
+      
       } />
       <Route path="/reportUser" element={
        <ProtectedUser>
