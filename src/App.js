@@ -13,6 +13,7 @@ import UserAuth from "./Protected/UserAutherization";
 import AuthRoute from "./Protected/AuthRoute";
 const Container = styled.div`
   display: flex;
+  height:100%;
 `;
 
 const Main = styled.div`
