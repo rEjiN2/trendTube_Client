@@ -7,7 +7,7 @@ const ProtectedUser = ({ children }) => {
 
   useEffect(() => {
     const accessToken = Cookies.get('adminAccess_token');
-
+     console.log(accessToken,"acess")
     if (!accessToken) {
       navigate('/admin/');
     }

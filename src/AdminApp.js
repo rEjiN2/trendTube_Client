@@ -12,20 +12,20 @@ function AdminApp() {
   return (
     <Routes>
       <Route path="/" element={
-       
+        <ProtectedAdmin>
       <AdminLogin />
-      
+      </ProtectedAdmin>
       } />
 
       <Route path="/adminHome" element={
-        
+        <ProtectedUser>
       < AdminPage/>
-    
+      </ProtectedUser>
       } />
       <Route path="/verifyVideo" element={
-       
+       <ProtectedUser>
       <Verify/>
-      
+      </ProtectedUser>
       } />
       <Route path="/reportUser" element={
        <ProtectedUser>
