@@ -86,6 +86,7 @@ function Login() {
         { email, password },
         { withCredentials: true, credentials: 'include' }
       );
+      console.log(res,"res");
       dispatch(loginSuccess(res.data));
       navigate('/');
     } catch (err) {
