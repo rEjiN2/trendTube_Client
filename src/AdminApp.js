@@ -12,9 +12,9 @@ function AdminApp() {
   return (
     <Routes>
       <Route path="/" element={
-        <ProtectedAdmin>
+       
       <AdminLogin />
-      </ProtectedAdmin>
+      
       } />
 
       <Route path="/adminHome" element={
