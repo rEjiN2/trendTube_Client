@@ -13,8 +13,9 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: calc(100vh - 56px);
+  min-height: 100vh;
   color: ${({ theme }) => theme.text};
+  background-color: ${({ theme }) => theme.bg};
 `;
 
 const Wrapper = styled.div`
@@ -25,6 +26,9 @@ const Wrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.soft};
   padding: 20px 50px;
   gap: 10px;
+  max-width: 400px;
+  width: 100%;
+  height:100%;
 `;
 
 const Title = styled.h1`
@@ -70,9 +74,9 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-   const [loginError, setLoginError] = useState(false); 
-   const [errMsg ,setErrMsg] = useState('')
-   const [isLoading, setIsLoading] = useState(false);
+  const [loginError, setLoginError] = useState(false);
+  const [errMsg, setErrMsg] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -86,14 +90,13 @@ function Login() {
         { email, password },
         { withCredentials: true, credentials: 'include' }
       );
-     
       dispatch(loginSuccess(res.data));
       navigate('/');
     } catch (err) {
       dispatch(loginFailure());
-      setLoginError(true); 
-    }finally {
-      setIsLoading(false); 
+      setLoginError(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -115,17 +118,16 @@ function Login() {
       })
       .catch((error) => {
         dispatch(loginFailure());
-        setLoginError(true); 
+        setLoginError(true);
       })
       .finally(() => {
-        setIsLoading(false); 
+        setIsLoading(false);
       });
   };
 
   const handleSignup = async (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
-
       setIsLoading(true);
       try {
         await axios
@@ -136,72 +138,46 @@ function Login() {
           });
       } catch (err) {
         console.log(err.message);
-      }finally {
-        setIsLoading(false); 
+      } finally {
+        setIsLoading(false);
       }
-    }else{
-     setErrMsg('Password Not Match')
+    } else {
+      setErrMsg('Password Not Match');
     }
   };
 
   return (
     <Container>
-    {isLoading ? ( 
-      <Loader />
-    ) : (
-      <Wrapper>
-        <Title>Sign in</Title>
-        <Input placeholder="email" onChange={(e) => setEmail(e.target.value)} />
-        <Input type="password" placeholder="password" onChange={(e) => setPassword(e.target.value)} />
-        {loginError && <p style={{ color: 'red' }}>Login failed. Please try again.</p>} 
-        <Button onClick={handleLogin}>Sign in</Button>
-        <Title>or</Title>
-        <Button onClick={signInWithGoogle}>Sign In With Google</Button>
-        <Title>or</Title>
-        <Input placeholder="username" onChange={(e) => setName(e.target.value)} />
-        <Input placeholder="email" onChange={(e) => setEmail(e.target.value)} />
-        <Input type="password" placeholder="password" onChange={(e) => setPassword(e.target.value)} />
-        <Input type="password" placeholder="confirm.password" onChange={(e) => setConfirmPassword(e.target.value)} />
-       {errMsg!==''?<p style={{ color: 'red' }}>{errMsg}</p>:''}
-        <Button onClick={handleSignup}>Sign up</Button>
-      </Wrapper> 
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <Wrapper>
+          <Title>Sign in</Title>
+          <Input placeholder="email" onChange={(e) => setEmail(e.target.value)} />
+          <Input type="password" placeholder="password" onChange={(e) => setPassword(e.target.value)} />
+          {loginError && <p style={{ color: 'red' }}>Login failed. Please try again.</p>}
+          <Button onClick={handleLogin}>Sign in</Button>
+          <Title>or</Title>
+          <Button onClick={signInWithGoogle}>Sign In With Google</Button>
+          <Title>or</Title>
+          <Input placeholder="username" onChange={(e) => setName(e.target.value)} />
+          <Input placeholder="email" onChange={(e) => setEmail(e.target.value)} />
+          <Input type="password" placeholder="password" onChange={(e) => setPassword(e.target.value)} />
+          <Input type="password" placeholder="confirm.password" onChange={(e) => setConfirmPassword(e.target.value)} />
+          {errMsg !== '' ? <p style={{ color: 'red' }}>{errMsg}</p> : ''}
+          <Button onClick={handleSignup}>Sign up</Button>
+        </Wrapper>
+      )}
 
-
-
-
-
-    )}
-    
-  </Container>
-
-
-
-    // <Container>
-    //   <Wrapper>
-    //     <Title>Sign in</Title>
-    //     <Input placeholder="email" onChange={(e) => setEmail(e.target.value)} />
-    //     <Input type="password" placeholder="password" onChange={(e) => setPassword(e.target.value)} />
-    //     {loginError && <p style={{ color: 'red' }}>Login failed. Please try again.</p>} 
-    //     <Button onClick={handleLogin}>Sign in</Button>
-    //     <Title>or</Title>
-    //     <Button onClick={signInWithGoogle}>Sign In With Google</Button>
-    //     <Title>or</Title>
-    //     <Input placeholder="username" onChange={(e) => setName(e.target.value)} />
-    //     <Input placeholder="email" onChange={(e) => setEmail(e.target.value)} />
-    //     <Input type="password" placeholder="password" onChange={(e) => setPassword(e.target.value)} />
-    //     <Input type="password" placeholder="confirm.password" onChange={(e) => setConfirmPassword(e.target.value)} />
-    //     <Button onClick={handleSignup}>Sign up</Button>
-    //   </Wrapper>
-    //   <More>
-    //     English(USA)
-    //     <Links>
-    //       <Link>Help</Link>
-    //       <Link>Privacy</Link>
-    //       <Link>Terms</Link>
-    //     </Links>
-    //   </More>
-    
-    // </Container>
+      <More>
+        English(USA)
+        <Links>
+          <Link>Help</Link>
+          <Link>Privacy</Link>
+          <Link>Terms</Link>
+        </Links>
+      </More>
+    </Container>
   );
 }
 
