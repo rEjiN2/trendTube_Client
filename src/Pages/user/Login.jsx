@@ -13,7 +13,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  height: 200vh;
   color: ${({ theme }) => theme.text};
   background-color: ${({ theme }) => theme.bg};
 `;

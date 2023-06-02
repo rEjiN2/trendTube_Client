@@ -25,7 +25,7 @@ const Container = styled.div`
   flex: 1;
   background-color: ${({ theme }) => theme.bgLighter}};
   color: ${({ theme }) => theme.text};
-  height: 100vh;
+  height: 125vh;
   position: sticky;
   top: 0;
   @media screen and (max-width: 768px) {

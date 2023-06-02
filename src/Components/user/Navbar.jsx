@@ -303,6 +303,18 @@ function Navbar() {
   const cancelLogout = () => {
     setShowConfirmation(false);
   };
+  const fetchNotifications = async () => {
+    try {
+      const response = await axios.get('users/notifications');
+      const notifications = response.data;
+      setNotifications(notifications);
+      const unseenNotifications = notifications.filter(notification => !notification.viewed);
+      const count = unseenNotifications.length;
+      setNewNotificationCount(count);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
 
   const toggleNotifications = async () => {
     try {
@@ -317,19 +329,14 @@ function Navbar() {
   };
 
   useEffect(() => {
-    if (!hasClickedNotifications) {
-      const fetchNotifications = async () => {
-        const response = await axios.get('users/notifications');
-        const notifications = response.data;
-        setNotifications(notifications);
-        const unseenNotifications = notifications.filter(notification => !notification.viewed);
-        const count = unseenNotifications.length;
-        setNewNotificationCount(count);
-      };
-
+    if (currentUser && !hasClickedNotifications) {
       fetchNotifications();
     }
-  }, []);
+  }, [currentUser, hasClickedNotifications]);
+
+  useEffect(() => {
+    setHasClickedNotifications(false);
+  }, [currentUser]);
 
   return (
     <>

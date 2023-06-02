@@ -19,6 +19,7 @@ import { MoreVertOutlined } from '@mui/icons-material';
 const Container = styled.div`
 display:flex;
 gap:24px;
+height:200vh;
 `;
 const Content = styled.div`
 flex:3.5;
@@ -143,21 +144,77 @@ const Popup = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
-  padding: 20px;
+  padding: 40px;
   border: 1px solid #ccc;
   display: ${({ open }) => (open ? 'block' : 'none')};
+  font-family: 'Your Attractive Font', sans-serif;
+  font-size: 18px;
+  color: black;
+
+  @media (max-width: 425px) {
+    width: 80%;
+    max-height: 100%;
+    overflow-y: scroll;
+  }
 `;
+const Recom = styled.div`
+@media screen and (max-width: 425px) {
+  
+    display: none;
+  
+}
+`
 
 const PopupMessage = styled.p`
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  font-size: 20px;
 `;
 
 const CloseButton = styled.button`
   background-color: #cc1a00;
-  color: white;
   border: none;
   padding: 10px 20px;
   cursor: pointer;
+  font-size: 16px;
+`;
+const ReasonsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+`;
+
+const ReasonOption = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+
+  input[type='radio'] {
+    margin-right: 10px;
+  }
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const SubmitButton = styled.button`
+  background-color: #cc1a00;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-right: 10px;
+  cursor: pointer;
+  font-size: 16px;
+`;
+
+const CancelButton = styled.button`
+  background-color: transparent;
+  color: #cc1a00;
+  border: 1px solid #cc1a00;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
 `;
 
 function Video() {
@@ -166,7 +223,9 @@ function Video() {
    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
    const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
    const [isPopupOpen, setIsPopupOpen] = useState(false);
-
+   const [showPopup, setShowPopup] = useState(false);
+   const [selectedReason, setSelectedReason] = useState('');
+   
    const handleToggleDropdown = (event) => {
      const iconPosition = event.target.getBoundingClientRect();
      setMenuPosition({
@@ -228,30 +287,74 @@ function Video() {
     }
    }
    const handleDisLike = async()=>{
-    await axios.put(`/users/disLike/${currentVideo._id}`)
-    dispatch(disLike(currentUser._id))
+    if(currentUser){
+
+      await axios.put(`/users/disLike/${currentVideo._id}`)
+      dispatch(disLike(currentUser._id))
+    }
+    else{
+      setIsPopupOpen(true);
+    }
 
    }
    const handleSubscribe = async () =>{
-    currentUser.subscribedUsers.includes(channel._id) ? await axios.put(`/users/unsub/${channel._id}`) :
-    await axios.put(`/users/sub/${channel._id}`);
-    dispatch(subscription(channel._id))
+    if(currentUser){
+      currentUser.subscribedUsers.includes(channel._id) ? await axios.put(`/users/unsub/${channel._id}`) :
+      await axios.put(`/users/sub/${channel._id}`);
+      dispatch(subscription(channel._id))
+    }else{
+      setIsPopupOpen(true);
+    }
    }
    const handleReport = async () => {
-    
+    if(currentUser){
       const res = await axios.put(`/users/report/${channel._id}`) 
+    }else{
+      setIsPopupOpen(true);
+    }
       
     
   }
- const handleVideoReport = async () => {
-       try{
-        const res = await axios.put(`/videos/reportVid/${currentVideo._id}`)
-        res.status===200 && setIsReported(true) 
-       }catch(err){
-        console.log(err.message);
-       }
+//  const handleVideoReport = async () => {
+//   if(currentUser){
+
+//     try{
+
+//       const res = await axios.put(`/videos/reportVid/${currentVideo._id}`)
+//       res.status===200 && setIsReported(true) 
+//        }catch(err){
+//         console.log(err.message);
+//       }
+//     }
+//     else{
+//       setIsPopupOpen(true);
+//     }  
       
- }
+//  }
+const handleVideoReport = () => {
+  if (currentUser) {
+    setShowPopup(true);
+  } else {
+    setIsPopupOpen(true);
+  }
+};
+const handleReportSubmit = async () => {
+  if (selectedReason !== '') {
+    try {
+      const res = await axios.put(`/videos/reportVid/${currentVideo._id}`, {
+        reason: selectedReason
+      });
+      if (res.status === 200) {
+        setIsReported(true);
+        setShowPopup(false);
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+};
+
+
   return (
     <Container>
         <Content>
@@ -272,6 +375,47 @@ function Video() {
           <Button><AddTaskOutlinedIcon /> Save</Button>
         {isReported===true ? <Button>Reported</Button> : <Button onClick={handleVideoReport} > <TourOutlinedIcon/>Report </Button>}  
         </Buttons>
+        <Popup open={showPopup}>
+  <PopupMessage>Please select a reason:</PopupMessage>
+  <ReasonsContainer>
+    <ReasonOption>
+      <input
+        type="radio"
+        id="reason1"
+        value="Reason 1"
+        checked={selectedReason === 'Reason 1'}
+        onChange={() => setSelectedReason('Reason 1')}
+      />
+      <label htmlFor="reason1">Inappropriate Content</label>
+    </ReasonOption>
+    <ReasonOption>
+      <input
+        type="radio"
+        id="reason2"
+        value="Reason 2"
+        checked={selectedReason === 'Reason 2'}
+        onChange={() => setSelectedReason('Reason 2')}
+      />
+      <label htmlFor="reason2">Promote terrorisom</label>
+    </ReasonOption>
+    <ReasonOption>
+      <input
+        type="radio"
+        id="reason3"
+        value="Reason 3"
+        checked={selectedReason === 'Reason 3'}
+        onChange={() => setSelectedReason('Reason 3')}
+      />
+      <label htmlFor="reason3">Adult Content</label>
+    </ReasonOption>
+  </ReasonsContainer>
+  <ButtonContainer>
+    <SubmitButton onClick={handleReportSubmit}>Submit</SubmitButton>
+    <CancelButton onClick={() => setShowPopup(false)}>Close</CancelButton>
+  </ButtonContainer>
+</Popup>
+
+
        </Details>
        <Hr/>
        <Channel>
@@ -299,9 +443,11 @@ function Video() {
         <Hr />
         <Comments videoId = {currentVideo?._id}/>
         </Content>
+        <Recom>
         <Recommendation tags={currentVideo?.tags}/>
+        </Recom>
         <Popup open={isPopupOpen}>
-        <PopupMessage>Please sign in to like this content.</PopupMessage>
+        <PopupMessage>Please sign in to perform this action.</PopupMessage>
         <CloseButton onClick={() => setIsPopupOpen(false)}>Close</CloseButton>
       </Popup>
     </Container>
