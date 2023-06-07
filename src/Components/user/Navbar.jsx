@@ -295,7 +295,12 @@ function Navbar() {
   };
 
   const confirmLogout = async () => {
-    await axios.get("/auth/logout");
+     document.cookie.split(";").forEach((c) => {
+      document.cookie = c
+        .replace(/^ +/, "")
+        .replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`);
+    });
+    await axios.get("/auth/logout", { withCredentials: true });
     dispatch(logout());
     setShowConfirmation(false);
   };
