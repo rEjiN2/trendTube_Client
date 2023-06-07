@@ -274,7 +274,9 @@ const Button = styled.button`
 `;
 
 
-
+const clearAccessTokenCookie = () => {
+  document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.trendtube.online; path=/;";
+};
 
 
 function Navbar() {
@@ -295,11 +297,7 @@ function Navbar() {
   };
 
   const confirmLogout = async () => {
-     document.cookie.split(";").forEach((c) => {
-      document.cookie = c
-        .replace(/^ +/, "")
-        .replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`);
-    });
+    clearAccessTokenCookie();
     await axios.get("/auth/logout", { withCredentials: true });
     dispatch(logout());
     setShowConfirmation(false);
