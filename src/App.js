@@ -11,6 +11,7 @@ import Search from "./Pages/user/Search";
 import HistoryPage from "./Pages/user/HistoryPage";
 import UserAuth from "./Protected/UserAutherization";
 import AuthRoute from "./Protected/AuthRoute";
+import Error from "./Pages/user/Error";
 const Container = styled.div`
   display: flex;
   height:100%;
@@ -37,6 +38,7 @@ function App() {
           <Wrapper>
             <Routes>
               <Route path="/" element={<Home type="random" />} />
+              <Route path="*" element={<Error/>} />
               <Route path="/history" element={
               <UserAuth>
               <HistoryPage />
