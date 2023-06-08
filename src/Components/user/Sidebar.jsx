@@ -122,10 +122,12 @@ function Sidebar({ darkMode, setDarkMode }) {
             <Img src={smallTube} />
           </Logo>
         </Link>
+        <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
         <Item>
           <HomeIcon />
           <span>Home</span>
         </Item>
+        </Link>
         <Br />
         <Link to="trends" style={{ textDecoration: 'none', color: 'inherit' }}>
           <Item>
