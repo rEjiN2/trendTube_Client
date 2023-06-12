@@ -129,7 +129,7 @@ function Login() {
     e.preventDefault();
     if (password === confirmPassword) {
       setIsLoading(true);
-      try {
+      try { 
         await axios
           .post('/auth/signUp', { name, password, email }, { withCredentials: true, credentials: 'include' })
           .then((res) => {
