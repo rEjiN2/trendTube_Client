@@ -46,11 +46,12 @@ const navigate = useNavigate();
 
 const handleLogin = async(e)=>{
     e.preventDefault();
- const res =    await axios.post(`/adminAuth/adminSignIn`,{ email, password }, { withCredentials: true ,credentials:'include' })
-       navigate("/admin/adminHome");
-
-
-   
+ try{
+  const res =    await axios.post(`/adminAuth/adminSignIn`,{ email, password }, { withCredentials: true ,credentials:'include' })
+  navigate("/admin/adminHome");
+ }catch(err){
+console.log(err.message);
+ } 
 }
 
   return (

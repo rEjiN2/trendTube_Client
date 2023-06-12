@@ -131,7 +131,7 @@ function Login() {
       setIsLoading(true);
       try {
         await axios
-          .post(`/auth/signUp`, { name, password, email }, { withCredentials: true, credentials: 'include' })
+          .post('/auth/signUp', { name, password, email }, { withCredentials: true, credentials: 'include' })
           .then((res) => {
             dispatch(loginSuccess(res?.data));
             navigate('/');
