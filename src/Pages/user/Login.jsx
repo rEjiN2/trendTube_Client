@@ -7,6 +7,7 @@ import { auth, provider } from '../../firebase';
 import { signInWithPopup } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../../Components/user/Loader';
+import Cookies from 'js-cookie'; 
 
 const Container = styled.div`
   display: flex;
@@ -133,7 +134,11 @@ function Login() {
         await axios
           .post('/auth/signUp', { name, password, email }, { withCredentials: true, credentials: 'include' })
           .then((res) => {
-            dispatch(loginSuccess(res?.data));
+            const { token, ...remainingData } = res?.data;
+          Cookies.set('access_token', token, { 
+            expires: 365,   
+          });
+            dispatch(loginSuccess(remainingData));
             navigate('/');
           });
       } catch (err) {
