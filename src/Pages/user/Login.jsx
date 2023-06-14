@@ -135,7 +135,7 @@ function Login() {
           .post('/auth/signUp', { name, password, email }, { withCredentials: true, credentials: 'include' })
           .then((res) => {
             const { token, ...remainingData } = res?.data;
-            console.log(res.data,"hi");
+            console.log(res,"hi");
           Cookies.set('access_token', token, { 
             expires: 365,   
           });
