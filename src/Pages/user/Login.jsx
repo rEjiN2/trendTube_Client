@@ -133,8 +133,9 @@ function Login() {
       try {
         await axios
           .post(`/auth/signUp`, { name, password, email }, { withCredentials: true, credentials: 'include' })
-          .then((res) => {
+          .then((res) => {    
             const { token, ...remainingData } = res?.data;
+            console.log(token ,"Token hi") 
             // Assuming the server response contains the token in the "token" property
           Cookies.set('access_token', token, { // Set the token as a cookie using js-cookie library
             expires: 365, // Cookie expiration (in days)
