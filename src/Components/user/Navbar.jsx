@@ -10,6 +10,8 @@ import { logout } from '../../redux/userSlice';
 import Upload from './Upload';
 import Profile from './Profile';
 import NotificationsActiveOutlinedIcon from '@mui/icons-material/NotificationsActiveOutlined';
+import Cookies from 'js-cookie';
+
 
 const Container = styled.div`
   position: sticky;
@@ -274,9 +276,7 @@ const Button = styled.button`
 `;
 
 
-const clearAccessTokenCookie = () => {
-  document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.trendtube.online; path=/;";
-};
+
 
 
 function Navbar() {
@@ -297,7 +297,7 @@ function Navbar() {
   };
 
   const confirmLogout = async () => {
-    clearAccessTokenCookie();
+    Cookies.remove('access_token');
     await axios.get("/auth/logout", { withCredentials: true });
     dispatch(logout());
     setShowConfirmation(false);
