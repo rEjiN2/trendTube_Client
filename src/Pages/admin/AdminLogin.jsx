@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from '../../utils/axios';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 // Styled components
 const Container = styled.div`
   display: flex;
@@ -48,6 +49,11 @@ const handleLogin = async(e)=>{
     e.preventDefault();
  try{
   const res =    await axios.post(`/adminAuth/adminSignIn`,{ email, password }, { withCredentials: true ,credentials:'include' })
+  const { token, ...remainingData } = res?.data;
+  console.log(res,"hi");
+Cookies.set('adminAccess_token', token, { 
+  expires: 365,   
+});
   navigate("/admin/adminHome");
  }catch(err){
 console.log(err.message);
